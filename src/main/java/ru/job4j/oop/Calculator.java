@@ -29,7 +29,7 @@ public class Calculator {
         System.out.println(result);
         Calculator calc = new Calculator();
 
-        result = calc.multiply(2);
+        result = calc.multiply(4);
         System.out.println(result);
 
         result = calc.divide(2);
