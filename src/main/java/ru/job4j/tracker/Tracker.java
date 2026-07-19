@@ -50,19 +50,4 @@ public class Tracker {
         }
         return Arrays.copyOf(result, size);
     }
-
-    public static void main(String[] args) {
-        Tracker tracker = new Tracker();
-        Item first = new Item("First");
-        Item second = new Item("Second");
-        tracker.add(first);
-        tracker.add(second);
-        tracker.add(new Item("First"));
-        tracker.add(new Item("Second"));
-        tracker.add(new Item("First"));
-        Item[] result = tracker.findByName(first.getName());
-        for (Item item : result) {
-            System.out.println(item.getName());
-        }
-    }
 }
