@@ -6,7 +6,7 @@ public class Factorial {
             throw new IllegalArgumentException("Number could not be less than 0");
         }
         int result = 1;
-        for (int index = 0; index <= number; index++) {
+        for (int index = 2; index <= number; index++) {
             result *= index;
         }
         return result;
