@@ -28,13 +28,11 @@ public class PasswordValidator {
                     "Password can't be null"
             );
         }
-
         if (password.length() < 8 || password.length() > 32) {
             throw new IllegalArgumentException(
                     "Password should be length [8, 32]"
             );
         }
-
         String lowerPassword = password.toLowerCase();
         for (String forbidden : FORBIDDEN) {
             if (lowerPassword.contains(forbidden)) {
@@ -43,7 +41,6 @@ public class PasswordValidator {
                 );
             }
         }
-
         boolean hasUpCase = false;
         boolean hasLowCase = false;
         boolean hasDigit = false;
