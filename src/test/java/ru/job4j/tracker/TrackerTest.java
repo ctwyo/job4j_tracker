@@ -2,7 +2,6 @@ package ru.job4j.tracker;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,7 +14,7 @@ public class TrackerTest {
         item.setName("test1");
         tracker.add(item);
         Item result = tracker.findById(item.getId());
-        assertThat(result.getName()).isEqualTo(item.getName());
+        assertThat(result).isEqualTo(item);
     }
 
     @Test
@@ -24,50 +23,30 @@ public class TrackerTest {
         Item bug = new Item("Bug");
         Item item = tracker.add(bug);
         Item result = tracker.findById(item.getId());
-        assertThat(result.getName()).isEqualTo(item.getName());
+        assertThat(result).isEqualTo(item);
     }
 
     @Test
     public void whenTestFindAll() {
         Tracker tracker = new Tracker();
-        Item first = new Item("First");
-        Item second = new Item("Second");
-        tracker.add(first);
-        tracker.add(second);
+        Item first = tracker.add(new Item("First"));
+        Item second = tracker.add(new Item("Second"));
         List<Item> result = tracker.findAll();
-        List<Item> expected = new ArrayList<>();
-        expected.add(first);
-        expected.add(second);
+        List<Item> expected = List.of(first, second);
         assertThat(result).isEqualTo(expected);
     }
 
     @Test
     public void whenTestFindByNameCheckArrayLength() {
         Tracker tracker = new Tracker();
-        Item first = new Item("First");
-        Item second = new Item("Second");
-        tracker.add(first);
-        tracker.add(second);
+        Item first = tracker.add(new Item("First"));
+        tracker.add(new Item("Second"));
         tracker.add(new Item("First"));
         tracker.add(new Item("Second"));
         tracker.add(new Item("First"));
         List<Item> result = tracker.findByName(first.getName());
         assertThat(result.size()).isEqualTo(3);
     }
-
-//    @Test
-//    public void whenTestFindByNameCheckSecondItemName() {
-//        Tracker tracker = new Tracker();
-//        Item first = tracker.add(new Item("First"));
-//        Item second = tracker.add(new Item("Second"));
-//        tracker.add(first);
-//        tracker.add(second);
-//        tracker.add(new Item("First"));
-//        tracker.add(new Item("Second"));
-//        tracker.add(new Item("First"));
-//        List<Item> result = tracker.findByName(second.getName());
-//        assertThat(result.get(1).getName()).isEqualTo(second.getName());
-//    }
 
     @Test
     public void whenTestFindByNameCheckSecondItemName() {
@@ -83,41 +62,38 @@ public class TrackerTest {
     @Test
     public void whenReplaceItemIsSuccessful() {
         Tracker tracker = new Tracker();
-        Item item = new Item("Bug");
-        tracker.add(item);
+        Item item = tracker.add(new Item("Bug"));
         int id = item.getId();
-        Item updateItem = new Item("Bug with description");
-        tracker.replace(id, updateItem);
-        assertThat(tracker.findById(id).getName()).isEqualTo("Bug with description");
+        Item expected = new Item("Bug with description");
+        tracker.replace(id, expected);
+        boolean result = tracker.replace(item.getId(), expected);
+        assertThat(result).isTrue();
+        assertThat(tracker.findById(id)).isEqualTo(expected);
     }
 
     @Test
     public void whenReplaceItemIsNotSuccessful() {
         Tracker tracker = new Tracker();
-        Item item = new Item("Bug");
-        tracker.add(item);
+        Item item = tracker.add(new Item("Bug"));
         Item updateItem = new Item("Bug with description");
         boolean result = tracker.replace(1000, updateItem);
-        assertThat(tracker.findById(item.getId()).getName()).isEqualTo("Bug");
+        assertThat(tracker.findAll()).containsExactly(item);
         assertThat(result).isFalse();
     }
 
     @Test
     public void whenDeleteItemIsSuccessful() {
         Tracker tracker = new Tracker();
-        Item item = new Item("Bug");
-        tracker.add(item);
-        int id = item.getId();
-        tracker.delete(id);
-        assertThat(tracker.findById(id)).isNull();
+        Item item = tracker.add(new Item("Bug"));
+        tracker.delete(item.getId());
+        assertThat(tracker.findAll()).isEmpty();
     }
 
     @Test
     public void whenDeleteItemIsNotSuccessful() {
         Tracker tracker = new Tracker();
-        Item item = new Item("Bug");
-        tracker.add(item);
+        Item item = tracker.add(new Item("Bug"));
         tracker.delete(1000);
-        assertThat(tracker.findById(item.getId()).getName()).isEqualTo("Bug");
+        assertThat(tracker.findAll()).containsExactly(item);
     }
 }

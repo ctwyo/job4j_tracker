@@ -66,6 +66,7 @@ class StartUITest {
         };
         new StartUI(output).init(input, tracker, actions);
         assertThat(tracker.findById(item.getId())).isNull();
+        assertThat(tracker.findAll()).isEmpty();
     }
 
     @Test
@@ -156,7 +157,7 @@ class StartUITest {
         Output output = new StubOutput();
         Tracker tracker = new Tracker();
         Item one = tracker.add(new Item("test"));
-        String findId = "1";
+        String findId = String.valueOf(one.getId());
         Input input = new MockInput(
                 new String[] {"0", findId, "1"}
         );
