@@ -2,6 +2,7 @@ package ru.job4j.tracker;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,8 +34,11 @@ public class TrackerTest {
         Item second = new Item("Second");
         tracker.add(first);
         tracker.add(second);
-        Item result = tracker.findAll().get(0);
-        assertThat(result.getName()).isEqualTo(first.getName());
+        List<Item> result = tracker.findAll();
+        List<Item> expected = new ArrayList<>();
+        expected.add(first);
+        expected.add(second);
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -51,18 +55,29 @@ public class TrackerTest {
         assertThat(result.size()).isEqualTo(3);
     }
 
+//    @Test
+//    public void whenTestFindByNameCheckSecondItemName() {
+//        Tracker tracker = new Tracker();
+//        Item first = tracker.add(new Item("First"));
+//        Item second = tracker.add(new Item("Second"));
+//        tracker.add(first);
+//        tracker.add(second);
+//        tracker.add(new Item("First"));
+//        tracker.add(new Item("Second"));
+//        tracker.add(new Item("First"));
+//        List<Item> result = tracker.findByName(second.getName());
+//        assertThat(result.get(1).getName()).isEqualTo(second.getName());
+//    }
+
     @Test
     public void whenTestFindByNameCheckSecondItemName() {
         Tracker tracker = new Tracker();
-        Item first = new Item("First");
-        Item second = new Item("Second");
-        tracker.add(first);
-        tracker.add(second);
         tracker.add(new Item("First"));
-        tracker.add(new Item("Second"));
-        tracker.add(new Item("First"));
+        Item second = tracker.add(new Item("Second"));
+        tracker.add(new Item("Third"));
         List<Item> result = tracker.findByName(second.getName());
-        assertThat(result.get(1).getName()).isEqualTo(second.getName());
+        List<Item> expected = List.of(second);
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test

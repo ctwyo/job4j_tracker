@@ -7,6 +7,7 @@ import ru.job4j.input.MockInput;
 import ru.job4j.output.Output;
 import ru.job4j.output.StubOutput;
 
+import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class StartUITest {
@@ -22,7 +23,11 @@ class StartUITest {
                 new ExitAction(output)
         };
         new StartUI(output).init(input, tracker, actions);
-        assertThat(tracker.findAll().get(0).getName()).isEqualTo("Item name");
+        assertThat(tracker.findAll())
+                .extracting(Item::getId, Item::getName)
+                .containsExactly(
+                        tuple(1, "Item name")
+                        );
     }
 
     @Test
@@ -40,7 +45,11 @@ class StartUITest {
                 new ExitAction(output)
         };
         new StartUI(output).init(input, tracker, actions);
-        assertThat(tracker.findById(item.getId()).getName()).isEqualTo(replacedName);
+        assertThat(tracker.findAll())
+                .extracting(Item::getId, Item::getName)
+                .containsExactly(
+                        tuple(item.getId(), replacedName)
+                );
     }
 
     @Test
