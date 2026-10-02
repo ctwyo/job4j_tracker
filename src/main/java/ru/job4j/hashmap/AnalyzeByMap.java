@@ -23,13 +23,27 @@ public class AnalyzeByMap {
                 total += subject.score();
             }
             double averageScore = total / pupil.subjects().size();
-            result.add(new Label(pupil.name(), total / averageScore));
+            result.add(new Label(pupil.name(), averageScore));
         }
         return result;
     }
 
     public static List<Label> averageScoreBySubject(List<Pupil> pupils) {
-        return List.of();
+        List<Label> result = new ArrayList<>();
+        Map<String, Integer> map = new LinkedHashMap<>();
+        for (Pupil pupil : pupils) {
+            for (Subject subject : pupil.subjects()) {
+                int oldValue = map.getOrDefault(subject.name(), 0);
+                int newValue = oldValue + subject.score();
+                map.put(subject.name(), newValue);
+            }
+        }
+        for (String key : map.keySet()) {
+            int value = map.get(key);
+            double score = (double) value / pupils.size();
+            result.add(new Label(key, score));
+        }
+        return result;
     }
 
     public static Label bestStudent(List<Pupil> pupils) {
