@@ -25,8 +25,8 @@ public class BankService {
         if (user == null) {
             return;
         }
-        List<Account> accounts = getAccounts(user);
-        if (!accounts.contains(account)) {
+        List<Account> accounts = users.get(user);
+        if (accounts != null && !accounts.contains(account)) {
             accounts.add(account);
         }
     }
@@ -72,6 +72,6 @@ public class BankService {
     }
 
     public List<Account> getAccounts(User user) {
-        return users.get(user);
+        return users.getOrDefault(user, List.of());
     }
 }
