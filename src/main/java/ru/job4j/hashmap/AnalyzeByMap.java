@@ -56,7 +56,8 @@ public class AnalyzeByMap {
             result.add(new Label(pupil.name(), total));
         }
         result.sort(Comparator.naturalOrder());
-        return result.get(result.size() - 1);
+        ListIterator<Label> iterator = result.listIterator(result.size());
+        return iterator.previous();
     }
 
     public static Label bestSubject(List<Pupil> pupils) {
@@ -74,6 +75,7 @@ public class AnalyzeByMap {
             result.add(new Label(key, value));
         }
         result.sort(Comparator.naturalOrder());
-        return result.get(result.size() - 1);
+        ListIterator<Label> iterator = result.listIterator(result.size());
+        return iterator.previous();
     }
 }
